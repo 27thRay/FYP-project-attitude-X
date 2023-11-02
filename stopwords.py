@@ -1,6 +1,6 @@
 from pdfminer.high_level import extract_text
 #Provide the Resume file path as an argument
-file_path = "resume_data/Resume_1.pdf"  
+file_path = "sample_data/Resume_1.pdf"  
 text = extract_text(file_path)
 
 #using spacy stopwords
