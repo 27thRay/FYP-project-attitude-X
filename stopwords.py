@@ -6,7 +6,7 @@ text = extract_text(file_path)
 #using spacy stopwords
 import spacy
 #loading the english language small model of spacy
-en = spacy.load('en_core_web_trf')
+en = spacy.load('en_core_web_sm')
 stopwords = en.Defaults.stop_words
 
 lst=[]
