@@ -1,8 +1,8 @@
 import os
-from stopwords import filter_stopwords
-from ner import jd_prompt_1, resume_prompt, convert_to_dict
-from extract_from_text import extract_email, extract_contact_number
-from similarity_matching import get_similarity_score
+from utility.stopwords import filter_stopwords
+from utility.ner import jd_prompt_1, resume_prompt, convert_to_dict
+from utility.extract_from_text import extract_email, extract_contact_number
+from utility.similarity_matching import get_similarity_score
 
 # Function to check file extension
 def check_file_type(file_path):

@@ -1,16 +1,21 @@
 import os
 import sys
 import streamlit as st
+from login import authenticator
+from streamlit_extras.switch_page_button import switch_page
 
 # Get the absolute path to 'Utility Folder'
 absolute_path = os.path.join(os.path.dirname(__file__), 'utility')
 sys.path.append(absolute_path)  # Add the absolute path to the system path
 
 # Import specific functions from the package
-from functions import process_text, print_score
-from convert_to_text import convertPDFToText, convertDocxToText
+from utility.functions import process_text, print_score
+from utility.convert_to_text import convertPDFToText, convertDocxToText
 
 st.title("Home Page")
+authenticator.logout('Logout', 'sidebar', key='unique_key')
+if st.session_state["authentication_status"] is None:
+    switch_page('login')
 
 st.sidebar.success("Select a Page above")
 
