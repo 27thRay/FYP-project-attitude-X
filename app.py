@@ -13,10 +13,10 @@ local_css('./docs/static/style.css')
 # should be
 show_pages(
     [
-        Page("./pages/Login.py", "Login", ":key:"),
-        Page("./pages/About.py","About",":book:"),
-        Page("./pages/Home.py","Home",":house:"),
-        Page("./pages/Charts.py", "Charts", ":chart_with_upwards_trend:")]
+        Page("./pages/login.py", "Login", ":key:"),
+        Page("./pages/about.py","About",":book:"),
+        Page("./pages/home.py","Home",":house:"),
+        Page("./pages/charts.py", "Charts", ":chart_with_upwards_trend:")]
 )
 
 switch_page("Login")
