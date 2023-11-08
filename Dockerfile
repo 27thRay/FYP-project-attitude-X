@@ -2,9 +2,6 @@
 FROM python:3.9-slim 
 #lightweight image comes from python3.9
 
-#set working dir for run, cmd, entrypoint, copy
-WORKDIR /
-
 #Install git to clone app code from remote repo
 RUN apt-get update && apt-get install -y \
     build-essential \
