@@ -18,7 +18,7 @@ sys.path.append(absolute_path)  # Add the absolute path to the system path
 
 #Hide pages after login
 hide_pages(["Login"])
-local_css('style.css')
+local_css('./docs/static/style.css')
 
 #Logout Button
 logout = st.sidebar.button("Logout")

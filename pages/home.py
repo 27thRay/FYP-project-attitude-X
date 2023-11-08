@@ -5,10 +5,11 @@ import pymongo
 import streamlit as st
 from st_pages import hide_pages
 
+
 # Importing functions
 from utility.functions import process_text, get_score
 from utility.convert_to_text import convertPDFToText, convertDocxToText
-from database import get_ovr_score_desc, insert_score, search_score
+from database import get_ovr_score_desc, insert_score, search_score, weightage_table
 from streamlit_extras.switch_page_button import switch_page
 from utility.loadcss import local_css
 
@@ -16,7 +17,7 @@ from utility.loadcss import local_css
 absolute_path = os.path.join(os.path.dirname(__file__), 'utility')
 sys.path.append(absolute_path)  # Add the absolute path to the system path
 
-local_css('style.css')
+local_css('./docs/static/style.css')
 #Hide pages after login
 hide_pages(["Login"])
 
@@ -72,14 +73,14 @@ if st.button("Process"):
         
         if jd_dict and resume_array:
             for resume_dict in resume_array:
-                techsk_score, softsk_score, lang_score, overall_score = get_score(jd_dict, resume_dict)
+                techsk_score, softsk_score, lang_score, overall_score = get_score(jd_dict, resume_dict, tech_slider, soft_slider, lang_slider)
                 insert_score(resume_dict, techsk_score, softsk_score, lang_score, overall_score)
                 st.toast(f"Resume for {resume_dict['Name']} :green[successfully uploaded]!", icon='🎉')
         else:
             st.toast(':red[Hey!] Please upload both job description and resume files!', icon='👺')
     else:
         st.toast(':red[Hey!] Please upload job description and resume files!', icon='👺')
-                
+    
 filter = st.slider('Filter',value=0,on_change=search_score, key='score')
 
 col1, col2 = st.columns(2)
@@ -93,19 +94,20 @@ if filter != 0:
 else:
     st.dataframe(get_ovr_score_desc(),hide_index=True)
 
-# #Bar Chart Ranking Plot
-# columns=["Resume 1", "Resume 2"]
-# barchart_data = get_ovr_score_desc()#This is dataframe
-# print(barchart_data)
+st.markdown(
+    """
+    #### Input Weightage of skills:
+    **(Please ensure weightages add up to 10)**
+    """
+)
 
-# st.bar_chart(barchart_data)
+tech_slider = st.slider('Input Technical Skills Weightage (%)', 0, 10, 4)
+soft_slider = st.slider('Input Soft Skills Weightage (%)', 0, 10, 4)
+lang_slider = st.slider('Input Languages Weightage (%)', 0, 10, 2)
 
-# ##Score Distribution Plot
-# data = np.random.randn(200) - 2
-# labels = ['Score Distribution']
-
-# #Create distplot with custom bin_size
-# fig = ff.create_distplot([data], labels, bin_size=[.1, .25, .5])
-
-# #Plot
-# st.plotly_chart(fig, use_container_width=True)
+if st.button("Calculate Weightage"):
+    if tech_slider+soft_slider+lang_slider==10:
+        st.dataframe(weightage_table(tech_slider, soft_slider, lang_slider),hide_index=True)
+    else:
+        st.toast(':red[Hey!] Ensure weightages add up to 100%!', icon='👺')
+    

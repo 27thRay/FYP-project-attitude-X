@@ -8,11 +8,13 @@ myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["resumeDB"]
 mycol = mydb["scores"]
 
+@st.cache_data
 def set_table_style(table):
     blankIndex=[''] * len(table)
     table.index=blankIndex
     return table
 
+@st.cache_data
 def insert_score(resume_dict, techsk_score, softsk_score, lang_score, overall_score):
     mydict =  {
         "name": resume_dict["Name"],
@@ -27,6 +29,7 @@ def insert_score(resume_dict, techsk_score, softsk_score, lang_score, overall_sc
     x = mycol.insert_one(mydict)
     return
 
+@st.cache_data
 def get_ovr_score_desc():
     table = pd.DataFrame(mycol.find().sort('overall_score',-1))
     if len(table) != 0:
@@ -34,6 +37,7 @@ def get_ovr_score_desc():
         table = set_table_style(table)     
     return table
 
+@st.cache_data
 def get_ovr_score_asc():
     table = pd.DataFrame(mycol.find().sort('overall_score',1))
     if len(table) != 0:
@@ -41,6 +45,7 @@ def get_ovr_score_asc():
         table = set_table_style(table)     
     return table
 
+@st.cache_data
 def search_score():
     try:
         score = float(st.session_state.score)
@@ -64,3 +69,14 @@ def search_score():
         return table
     except:
         return
+    
+@st.cache_data
+def weightage_table(tech_slider, soft_slider, lang_slider):
+    table = pd.DataFrame(mycol.find().sort('overall_score',-1))
+    if len(table) != 0:
+        table = table.drop(['_id'],axis=1)
+        table = table.drop(['overall_score'],axis=1)
+        # Calculate the new overall_score based on weights
+        table['overall_score'] = (tech_slider/10) * float(table['technical_skills']) + (soft_slider/10) * float(table['soft_skills']) + (lang_slider/10) * float(table['languages'])
+        table = set_table_style(table)     
+    return table
