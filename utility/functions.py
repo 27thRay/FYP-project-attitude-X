@@ -31,7 +31,7 @@ def process_text(text, filetype):
         resume_dict['email'] = email
         return resume_dict
     
-def get_score(jd_dict, resume_dict, tech_slider, soft_slider, lang_slider):
+def get_score(jd_dict, resume_dict, tech_slider=0.4, soft_slider=0.4, lang_slider=0.2):
     techsk_score, softsk_score, lang_score = get_similarity_score(jd_dict, resume_dict)
     overall_score = techsk_score*tech_slider+softsk_score*soft_slider+lang_score*lang_slider
     

@@ -73,7 +73,7 @@ if st.button("Process"):
         
         if jd_dict and resume_array:
             for resume_dict in resume_array:
-                techsk_score, softsk_score, lang_score, overall_score = get_score(jd_dict, resume_dict, tech_slider, soft_slider, lang_slider)
+                techsk_score, softsk_score, lang_score, overall_score = get_score(jd_dict, resume_dict)
                 insert_score(resume_dict, techsk_score, softsk_score, lang_score, overall_score)
                 st.toast(f"Resume for {resume_dict['Name']} :green[successfully uploaded]!", icon='🎉')
         else:
@@ -94,20 +94,4 @@ if filter != 0:
 else:
     st.dataframe(get_ovr_score_desc(),hide_index=True)
 
-st.markdown(
-    """
-    #### Input Weightage of skills:
-    **(Please ensure weightages add up to 10)**
-    """
-)
-
-tech_slider = st.slider('Input Technical Skills Weightage (%)', 0, 10, 4)
-soft_slider = st.slider('Input Soft Skills Weightage (%)', 0, 10, 4)
-lang_slider = st.slider('Input Languages Weightage (%)', 0, 10, 2)
-
-if st.button("Calculate Weightage"):
-    if tech_slider+soft_slider+lang_slider==10:
-        st.dataframe(weightage_table(tech_slider, soft_slider, lang_slider),hide_index=True)
-    else:
-        st.toast(':red[Hey!] Ensure weightages add up to 100%!', icon='👺')
     
